@@ -5,11 +5,12 @@ var path = require('path');
 var glob = require('glob');
 var purify = require('purify-css');
 var gutil = require('gulp-util');
+var fs = require('fs');
 var File = gutil.File;
 
 const PLUGIN_NAME = 'gulp-purifycss';
 
-module.exports = function(source, styles, destinatin, options) {
+module.exports = function(source, styles, options) {
 
   var sourceFiles = [];
   source.forEach(function(pathPattern) {
@@ -20,7 +21,6 @@ module.exports = function(source, styles, destinatin, options) {
   if (!sourceFiles.length) {
     throw new PluginError('gulp-purifycss', 'Missing source files for gulp-purifycss');
   }
-
 
   var styleFiles = [];
   styleFiles.forEach(function(pathPattern) {
@@ -34,5 +34,8 @@ module.exports = function(source, styles, destinatin, options) {
 
   var pure = purify(src, styles, {write: false, info: true});
 
-  return through.obj(endStream);
+  fs.writeFile('./tmp/new.css', pure, 'utf8', function(err) {
+    if (err) throw err;
+  });
+  return through.obj();
 };
