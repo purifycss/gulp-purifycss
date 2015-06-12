@@ -1,41 +1,49 @@
-'use strict';
-
-var through = require('through');
-var path = require('path');
+var through = require('through2');
 var glob = require('glob');
-var purify = require('purify-css');
 var gutil = require('gulp-util');
-var fs = require('fs');
-var File = gutil.File;
+var PluginError = gutil.PluginError;
+var purify = require('purify-css');
 
 const PLUGIN_NAME = 'gulp-purifycss';
 
-module.exports = function(source, styles, options) {
-
+module.exports = function(source, options) {
   var sourceFiles = [];
   source.forEach(function(pathPattern) {
     var files = glob.sync(pathPattern);
-    console.log("Source Files: ", files);
     sourceFiles = sourceFiles.concat(files);
   });
-  if (!sourceFiles.length) {
-    throw new PluginError('gulp-purifycss', 'Missing source files for gulp-purifycss');
-  }
-
-  var styleFiles = [];
-  styleFiles.forEach(function(pathPattern) {
-    var style = glob.sync(pathPattern);
-    console.log("Style Files: ", style);
-    styleFiles = styleFiles.concat(style);
+  return through.obj(function(file, enc, cb) {
+    if (file.isNull()) {
+      cb(null, file);
+    }
+    if (file.isBuffer()) {
+      try {
+        purify(sourceFiles, file.contents.toString(), options, function(output){
+          file.contents = new Buffer(output);
+          cb(null, file);
+        });
+      } catch(error) {
+        this.emit('error', new PluginError(PLUGIN_NAME, error));
+        return cb(error);
+      }
+    }
+    if (file.isStream()) {
+      var css = '';
+      file.on('readable',function(buffer){
+        var part = buffer.read().toString();
+        css += part;
+      });
+      file.on('end',function(){
+        try {
+          purify(sourceFiles, css, options, function(output){
+            file.contents = new Buffer(output);
+            cb(null, file);
+          });
+        } catch(error) {
+          this.emit('error', new PluginError(PLUGIN_NAME, error));
+          return cb(error);
+        }
+      });
+    }
   });
-  if (!styleFiles.length) {
-    throw new PluginError('gulp-purifycss', 'Missing style files for gulp-purifycss');
-  }
-
-  var pure = purify(src, styles, {write: false, info: true});
-
-  fs.writeFile('./tmp/new.css', pure, 'utf8', function(err) {
-    if (err) throw err;
-  });
-  return through.obj();
 };
