@@ -25,19 +25,13 @@
 ```js
 var purify = require('gulp-purify');
 
-gulp.task('scripts', function() {
-  return gulp.src(
-    './public/app/**/*.js',
-    './public/**/*.html')
-    .pipe(purify('./public/styles/**/*.css'))
+gulp.task('css', function() {
+  return gulp.src('./public/app/example.css')
+    .pipe(purify(['./public/app/**/*.js', './public/**/*.html']))
     .pipe(gulp.dest('./dist/'));
 });
 ```
 
-This will purify your CSS files by comparing them to all of the source files provided to `gulp.src`.
-
-
-This will purify styles into `./dist/new.css`.
 
 ## LICENSE
 
