@@ -1,6 +1,6 @@
 {
   "name": "gulp-purifycss",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Remove unnecessary css",
   "main": "index.js",
   "scripts": {
@@ -22,12 +22,17 @@
   },
   "homepage": "https://github.com/purifycss/gulp-purifycss",
   "devDependencies": {
+    "assert": "^1.3.0",
     "gulp": "^3.9.0",
     "mocha": "^2.2.5",
-    "purify-css": "^1.0.6"
+    "should": "^7.0.1",
+    "stream-assert": "^2.0.2"
   },
   "dependencies": {
     "glob": "^5.0.10",
-    "path": "^0.11.14"
+    "gulp-util": "^3.0.6",
+    "path": "^0.11.14",
+    "purify-css": "^1.0.6",
+    "through2": "^2.0.0"
   }
 }
