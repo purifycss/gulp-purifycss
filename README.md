@@ -20,6 +20,11 @@
 </tr>
 </table>
 
+## Installation
+Currently the package is not published on NPM. To install from the git repository:
+
+`npm i --save-dev purifycss/gulp-purifycss`
+
 ## Usage
 
 ```js
