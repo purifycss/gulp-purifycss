@@ -23,7 +23,7 @@
 ## Usage
 
 ```js
-var purify = require('gulp-purify');
+var purify = require('gulp-purifycss');
 
 gulp.task('css', function() {
   return gulp.src('./public/app/example.css')
