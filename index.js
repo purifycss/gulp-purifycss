@@ -1,5 +1,5 @@
 var through = require('through2');
-var glob = require('glob');
+var globby = require('globby');
 var gutil = require('gulp-util');
 var PluginError = gutil.PluginError;
 var purify = require('purify-css');
@@ -7,11 +7,7 @@ var purify = require('purify-css');
 const PLUGIN_NAME = 'gulp-purifycss';
 
 module.exports = function(source, options) {
-  var sourceFiles = [];
-  source.forEach(function(pathPattern) {
-    var files = glob.sync(pathPattern);
-    sourceFiles = sourceFiles.concat(files);
-  });
+  var sourceFiles = globby.sync(source);
   return through.obj(function(file, enc, cb) {
     if (file.isNull()) {
       cb(null, file);
