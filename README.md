@@ -2,8 +2,6 @@
 
 > Clean unnecessary CSS
 
-![status](https://secure.travis-ci.org/purifycss/gulp-purifycss.svg?branch=master)
-
 ## Information
 
 <table>
