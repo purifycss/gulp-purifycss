@@ -1,6 +1,6 @@
 # gulp-purifycss
 
-> Clean unnecessary CSS
+Clean unnecessary CSS with [PurifyCSS](https://github.com/purifycss/purifycss)
 
 ## Information
 
